@@ -1,10 +1,20 @@
 from math import pi, sin, sqrt, cos
 
-from helper import *
+EXPECTED_AMPLITUDE = 1.0
+EXPECTED_MEAN = 0.707
 
 
-def assert_n(N):
-    assert is_power2(N) and N >= 64
+def calculation_error(expected, actual):
+    return expected - actual
+
+
+def error_points_by_M(N, K, signal_function, phase, expected, actual_function):
+    x_points, y_points = [], []
+    for M in range(K, 2 * N):
+        signal_values = list(signal_function(N, M, phase))
+        x_points.append(M)
+        y_points.append(calculation_error(expected, actual_function(signal_values)))
+    return x_points, y_points
 
 
 def harmonic_value(n, N, phase=0):
